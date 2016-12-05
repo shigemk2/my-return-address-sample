@@ -44,5 +44,10 @@ class Server extends Actor {
 
 class Worker extends Actor {
   def receive = {
+    case RequestComplex(what) =>
+      println("Worker: received complex request value: " + what)
+      sender ! ReplyToComplex("RESP-200 for " + what)
+    case _ =>
+      println("Worker: received unexpected message")
   }
 }
