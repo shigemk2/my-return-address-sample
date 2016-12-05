@@ -29,7 +29,16 @@ class Client extends Actor {
 }
 
 class Server extends Actor {
+  val worker = context.actorOf(Props[Worker], "worker")
   def receive = {
+    case request: Request =>
+      println("Server: received request value: " + request.what)
+      sender ! Reply("RESP-1 for " + request.what)
+    case request: RequestComplex =>
+      println("Server: received request vlaue: " + request.what)
+      worker forward request
+    case _ =>
+      println("Server: received unexpected message")
   }
 }
 
