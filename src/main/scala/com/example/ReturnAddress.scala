@@ -9,6 +9,12 @@ case class ReplyToComplex(what: String)
 case class StartWith(server: ActorRef)
 
 object ReturnAddressDriver extends CompletableApp(2) {
+  val client = system.actorOf(Props[Client], "client")
+  val server = system.actorOf(Props[Server], "server")
+  client ! StartWith(server)
+
+  awaitCompletion
+  println("ReturnAddress is completed.")
 }
 
 class Client extends Actor {
